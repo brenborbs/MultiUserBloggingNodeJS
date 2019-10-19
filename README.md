@@ -22,3 +22,8 @@ Back-end stack:
 
 - Added routes and controllers set-up
 - Completed Node API Basic Set-up
+
+3rd commit:
+
+- Completed User signup and signin
+- Added middleware for protected routes
