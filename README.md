@@ -27,3 +27,7 @@ Back-end stack:
 
 - Completed User signup and signin
 - Added middleware for protected routes
+
+4th commit :
+
+- Completed create, read and delete tags and categories functionality
