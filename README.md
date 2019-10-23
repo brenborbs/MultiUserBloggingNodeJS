@@ -31,3 +31,7 @@ Back-end stack:
 4th commit :
 
 - Completed create, read and delete tags and categories functionality
+
+5th commit:
+
+- Added Blog API
