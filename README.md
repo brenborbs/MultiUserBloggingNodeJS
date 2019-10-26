@@ -35,3 +35,7 @@ Back-end stack:
 5th commit:
 
 - Added Blog API
+
+6th commit:
+
+- Added Related Blogs API
