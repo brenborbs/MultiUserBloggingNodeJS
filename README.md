@@ -39,3 +39,7 @@ Back-end stack:
 6th commit:
 
 - Added Related Blogs API
+
+7th commit:
+
+- Added Search Blog API

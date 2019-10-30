@@ -300,3 +300,25 @@ exports.listRelated = (req, res) => {
       res.json(blogs);
     });
 };
+
+exports.listSearch = (req, res) => {
+  const { search } = req.query; // input value at front-end
+  if (search) {
+    Blog.find(
+      {
+        $or: [
+          { title: { $regex: search, $options: "i" } },
+          { body: { $regex: search, $options: "i" } }
+        ]
+      },
+      (err, blogs) => {
+        if (err) {
+          return res.status(400).json({
+            error: errorHandler(err)
+          });
+        }
+        res.json(blogs);
+      }
+    ).select("-photo -body");
+  }
+};
