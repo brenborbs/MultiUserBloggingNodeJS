@@ -43,3 +43,8 @@ Back-end stack:
 7th commit:
 
 - Added Search Blog API
+
+8th commit:
+
+- Added User Public profile API
+- Creating blogs by authenticated user API
