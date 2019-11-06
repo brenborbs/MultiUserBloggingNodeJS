@@ -48,3 +48,7 @@ Back-end stack:
 
 - Added User Public profile API
 - Creating blogs by authenticated user API
+
+9th commit:
+
+- added forgot password API
