@@ -52,3 +52,9 @@ Back-end stack:
 9th commit:
 
 - added forgot password API
+
+10th commit:
+
+- added account activation on sign-up API
+- added Google sign-in API
+- added Google analytics set-up
