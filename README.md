@@ -58,3 +58,17 @@ Back-end stack:
 - added account activation on sign-up API
 - added Google sign-in API
 - added Google analytics set-up
+
+11th commit and beyond:
+
+- added facebook, twitter and instagram to user model but not required
+
+To-Do list:
+
+- follow / unfollow still not working on both routes and controller
+
+Must add features:
+
+- like / unlike blog posts
+- follow / unfollow user
+- uploading multiple images blog

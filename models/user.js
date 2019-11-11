@@ -48,6 +48,15 @@ const userSchema = new mongoose.Schema(
     resetPasswordLink: {
       data: String,
       default: ""
+    },
+    facebook: {
+      type: String
+    },
+    twitter: {
+      type: String
+    },
+    instagram: {
+      type: String
     }
   },
   { timestamp: true }
