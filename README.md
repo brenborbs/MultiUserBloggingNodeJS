@@ -2,6 +2,7 @@
 
 Before running the terminal, make sure to make a .env file on main project folder
 
+```js
 NODE_ENV=
 APP_NAME=
 PORT=
@@ -15,8 +16,13 @@ EMAIL_FROM=
 JWT_RESET_PASSWORD=
 JWT_ACCOUNT_ACTIVATION=
 GOOGLE_CLIENT_ID=
+```
 
-To run on terminal "npm start"
+To run on terminal
+
+```js
+npm start
+```
 
 Back-end stack:
 
