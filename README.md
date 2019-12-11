@@ -24,6 +24,11 @@ To run on terminal
 npm start
 ```
 
+## App Screenshots
+
+<img src="app3.png" alt="NodeJS Blogging" >
+<img src="app5.png" alt="NodeJS Blogging" >
+
 Back-end stack:
 
 - Node.js

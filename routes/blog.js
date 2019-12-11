@@ -50,7 +50,7 @@ router.put(
   update
 );
 // like
-router.put("/blogs/like/:slug", requireSignin, like);
-router.put("/blogs/unlike/:slug", requireSignin, unlike);
+router.put("/blog/like/:slug", requireSignin, like);
+router.put("/blog/unlike/:slug", requireSignin, unlike);
 
 module.exports = router;

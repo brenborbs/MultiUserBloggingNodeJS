@@ -353,7 +353,7 @@ exports.like = (req, res) => {
   const slug = req.params.slug.toLowerCase();
   Blog.findOne(
     { slug },
-    { $push: { likes: req.body.userId } }, // error null
+    { $push: { likes: req.body.user._id } }, // error null
     { new: true }
   ).exec((err, result) => {
     if (err) {
@@ -370,7 +370,7 @@ exports.unlike = (req, res) => {
   const slug = req.params.slug.toLowerCase();
   Blog.findOne(
     { slug },
-    { $pull: { likes: req.body.userId } }, // error null
+    { $pull: { likes: req.body.user._id } }, // error null
     { new: true }
   ).exec((err, result) => {
     if (err) {
