@@ -16,7 +16,7 @@ exports.create = (req, res) => {
   form.parse(req, (err, fields, files) => {
     if (err) {
       return res.status(400).json({
-        error: "Image could not upload"
+        error: "Image could not upload",
       });
     }
 
@@ -25,32 +25,32 @@ exports.create = (req, res) => {
     // title, body , tag and categories custom validation
     if (!title || !title.length) {
       return res.status(400).json({
-        error: "Title is required"
+        error: "Title is required",
       });
     }
 
     if (!body || body.length < 200) {
       return res.status(400).json({
-        error: "Content is too short"
+        error: "Content is too short",
       });
     }
 
     if (!categories || categories.length === 0) {
       return res.status(400).json({
-        error: "At least one category is required"
+        error: "At least one category is required",
       });
     }
 
     if (!tags || tags.length === 0) {
       return res.status(400).json({
-        error: "At least one tag is required"
+        error: "At least one tag is required",
       });
     }
 
     let blog = new Blog();
     blog.title = title;
     blog.body = body;
-    blog.excerpt = smartTrim(body, 320, " ", " ..."); // blog excerpt 320 characters
+    blog.excerpt = smartTrim(body, 100, " ", " ..."); // blog excerpt 100 characters
     blog.slug = slugify(title).toLowerCase();
     blog.mtitle = `${title} | ${process.env.APP_NAME}`;
     blog.mdesc = stripHtml(body.substring(0, 160)); // blog metadesc grab first 160 characters
@@ -62,7 +62,7 @@ exports.create = (req, res) => {
     if (files.photo) {
       if (files.photo.size > 10000000) {
         return res.status(400).json({
-          error: "Image should be less then 1mb in size"
+          error: "Image should be less then 1mb in size",
         });
       }
       blog.photo.data = fs.readFileSync(files.photo.path);
@@ -72,7 +72,7 @@ exports.create = (req, res) => {
     blog.save((err, result) => {
       if (err) {
         return res.status(400).json({
-          error: errorHandler(err)
+          error: errorHandler(err),
         });
       }
       // res.json(result); add Categories and Tags on newly created blog
@@ -83,7 +83,7 @@ exports.create = (req, res) => {
       ).exec((err, result) => {
         if (err) {
           return res.status(400).json({
-            error: errorHandler(err)
+            error: errorHandler(err),
           });
         } else {
           Blog.findByIdAndUpdate(
@@ -93,7 +93,7 @@ exports.create = (req, res) => {
           ).exec((err, result) => {
             if (err) {
               return res.status(400).json({
-                error: errorHandler(err)
+                error: errorHandler(err),
               });
             } else {
               res.json(result);
@@ -111,14 +111,14 @@ exports.list = (req, res) => {
   Blog.find({})
     .populate("categories", "_id name slug")
     .populate("tags", "_id name slug")
-    .populate("postedBy", "_id name username")
+    .populate("postedBy", "_id name username about")
     .select(
-      "_id title slug excerpt categories tags postedBy createdAt updatedAt likes"
+      "_id title slug body excerpt categories about tags postedBy createdAt updatedAt likes"
     ) // added likes
     .exec((err, data) => {
       if (err) {
         return res.json({
-          error: errorHandler(err)
+          error: errorHandler(err),
         });
       }
       res.json(data);
@@ -146,7 +146,7 @@ exports.listAllBlogsCategoriesTags = (req, res) => {
     .exec((err, data) => {
       if (err) {
         return res.json({
-          error: errorHandler(err)
+          error: errorHandler(err),
         });
       }
       blogs = data; // blogs
@@ -154,7 +154,7 @@ exports.listAllBlogsCategoriesTags = (req, res) => {
       Category.find({}).exec((err, c) => {
         if (err) {
           return res.json({
-            error: errorHandler(err)
+            error: errorHandler(err),
           });
         }
         categories = c; // categories
@@ -162,7 +162,7 @@ exports.listAllBlogsCategoriesTags = (req, res) => {
         Tag.find({}).exec((err, t) => {
           if (err) {
             return res.json({
-              error: errorHandler(err)
+              error: errorHandler(err),
             });
           }
           tags = t;
@@ -178,14 +178,14 @@ exports.read = (req, res) => {
   Blog.findOne({ slug })
     .populate("categories", "_id name slug")
     .populate("tags", "_id name slug")
-    .populate("postedBy", "_id name username")
+    .populate("postedBy", "_id name username about")
     .select(
-      "_id title body slug mtitle mdesc categories tags postedBy createdAt updatedAt likes"
+      "_id title body slug mtitle mdesc about categories tags postedBy createdAt updatedAt likes"
     ) // added likes
     .exec((err, data) => {
       if (err) {
         return res.json({
-          error: errorHandler(err)
+          error: errorHandler(err),
         });
       }
       res.json(data);
@@ -197,11 +197,11 @@ exports.remove = (req, res) => {
   Blog.findOneAndRemove({ slug }).exec((err, data) => {
     if (err) {
       return res.json({
-        error: errorHandler(err)
+        error: errorHandler(err),
       });
     }
     res.json({
-      message: "Blog deleted successfully"
+      message: "Blog deleted successfully",
     });
   });
 };
@@ -212,7 +212,7 @@ exports.update = (req, res) => {
   Blog.findOne({ slug }).exec((err, oldBlog) => {
     if (err) {
       return res.status(400).json({
-        error: errorHandler(err)
+        error: errorHandler(err),
       });
     }
 
@@ -222,7 +222,7 @@ exports.update = (req, res) => {
     form.parse(req, (err, fields, files) => {
       if (err) {
         return res.status(400).json({
-          error: "Image could not upload"
+          error: "Image could not upload",
         });
       }
 
@@ -248,7 +248,7 @@ exports.update = (req, res) => {
       if (files.photo) {
         if (files.photo.size > 10000000) {
           return res.status(400).json({
-            error: "Image should be less then 1mb in size"
+            error: "Image should be less then 1mb in size",
           });
         }
         oldBlog.photo.data = fs.readFileSync(files.photo.path);
@@ -258,7 +258,7 @@ exports.update = (req, res) => {
       oldBlog.save((err, result) => {
         if (err) {
           return res.status(400).json({
-            error: errorHandler(err)
+            error: errorHandler(err),
           });
         }
         // result.photo = undefined;
@@ -275,7 +275,7 @@ exports.photo = (req, res) => {
     .exec((err, blog) => {
       if (err || !blog) {
         return res.status(400).json({
-          error: errorHandler(err)
+          error: errorHandler(err),
         });
       }
       res.set("Content-Type", blog.photo.contentType);
@@ -290,12 +290,16 @@ exports.listRelated = (req, res) => {
 
   Blog.find({ _id: { $ne: _id }, categories: { $in: categories } })
     .limit(limit)
+    .populate("categories", "_id name slug")
+    .populate("tags", "_id name slug")
     .populate("postedBy", "_id name username profile")
-    .select("title slug excerpt postedBy createdAt updatedAt likes") // added likes
+    .select(
+      "title slug excerpt postedBy createdAt updatedAt likes categories tags"
+    ) // added likes
     .exec((err, blogs) => {
       if (err) {
         return res.status(400).json({
-          error: "Blogs not found"
+          error: "Blogs not found",
         });
       }
       res.json(blogs);
@@ -309,18 +313,22 @@ exports.listSearch = (req, res) => {
       {
         $or: [
           { title: { $regex: search, $options: "i" } },
-          { body: { $regex: search, $options: "i" } }
-        ]
+          { body: { $regex: search, $options: "i" } },
+        ],
       },
       (err, blogs) => {
         if (err) {
           return res.status(400).json({
-            error: errorHandler(err)
+            error: errorHandler(err),
           });
         }
         res.json(blogs);
       }
-    ).select("-photo -body");
+    )
+      .populate("categories", "_id name slug")
+      .populate("tags", "_id name slug")
+      .populate("postedBy", "_id name username profile")
+      .select("-photo -body");
   }
 };
 
@@ -328,7 +336,7 @@ exports.listByUser = (req, res) => {
   User.findOne({ username: req.params.username }).exec((err, user) => {
     if (err) {
       return res.status(400).json({
-        error: errorHandler(err)
+        error: errorHandler(err),
       });
     }
     let userId = user._id;
@@ -340,7 +348,7 @@ exports.listByUser = (req, res) => {
       .exec((err, data) => {
         if (err) {
           return res.status(400).json({
-            error: errorHandler(err)
+            error: errorHandler(err),
           });
         }
         res.json(data);
@@ -351,14 +359,15 @@ exports.listByUser = (req, res) => {
 // like / unlike
 exports.like = (req, res) => {
   const slug = req.params.slug.toLowerCase();
+  let userId = user._id;
   Blog.findOne(
     { slug },
-    { $push: { likes: req.body.user._id } }, // error null
+    { $push: { likes: req.body.userId } }, // error null
     { new: true }
   ).exec((err, result) => {
     if (err) {
       return res.status(400).json({
-        error: err
+        error: err,
       });
     } else {
       res.json(result);
@@ -368,14 +377,15 @@ exports.like = (req, res) => {
 
 exports.unlike = (req, res) => {
   const slug = req.params.slug.toLowerCase();
+  let userId = user._id;
   Blog.findOne(
     { slug },
-    { $pull: { likes: req.body.user._id } }, // error null
+    { $pull: { likes: req.body.userId } }, // error null
     { new: true }
   ).exec((err, result) => {
     if (err) {
       return res.status(400).json({
-        error: err
+        error: err,
       });
     } else {
       res.json(result);

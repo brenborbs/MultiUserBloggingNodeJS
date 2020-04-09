@@ -45,73 +45,73 @@ exports.preSignup = (req, res) => {
   });
 };
 
-// exports.signup = (req, res) => {
-//   // console.log(req.body);
-//   // check if user already exists on db!
-//   User.findOne({ email: req.body.email }).exec((err, user) => {
-//     if (user) {
-//       return res.status(400).json({
-//         error: "Email is taken"
-//       });
-//     }
-//     // if user does not exist, then make new profile
-//     const { name, email, password } = req.body;
-//     let username = shortId.generate();
-//     let profile = `${process.env.CLIENT_URL}/profile/${username}`;
-
-//     let newUser = new User({ name, email, password, profile, username });
-//     newUser.save((err, success) => {
-//       if (err) {
-//         return res.status(400).json({
-//           error: err
-//         });
-//       }
-//       // res.json({
-//       //     user: success
-//       // });
-//       res.json({
-//         message: "Signup success! Please signin."
-//       });
-//     });
-//   });
-// };
-
 exports.signup = (req, res) => {
-  const token = req.body.token;
-  if (token) {
-    jwt.verify(token, process.env.JWT_ACCOUNT_ACTIVATION, function(
-      err,
-      decoded
-    ) {
+  // console.log(req.body);
+  // check if user already exists on db!
+  User.findOne({ email: req.body.email }).exec((err, user) => {
+    if (user) {
+      return res.status(400).json({
+        error: "Email is taken"
+      });
+    }
+    // if user does not exist, then make new profile
+    const { name, email, password } = req.body;
+    let username = shortId.generate();
+    let profile = `${process.env.CLIENT_URL}/profile/${username}`;
+
+    let newUser = new User({ name, email, password, profile, username });
+    newUser.save((err, success) => {
       if (err) {
-        return res.status(401).json({
-          error: "Expired link. Please register again"
+        return res.status(400).json({
+          error: err
         });
       }
-
-      const { name, email, password } = jwt.decode(token);
-
-      let username = shortId.generate();
-      let profile = `${process.env.CLIENT_URL}/profile/${username}`;
-
-      const user = new User({ name, email, password, profile, username });
-      user.save((err, user) => {
-        if (err) {
-          return res.status(401).json({
-            error: errorHandler(err)
-          });
-        }
-        return res.json({
-          message: "Sign-up success! Please Sign-in"
-        });
+      // res.json({
+      //     user: success
+      // });
+      res.json({
+        message: "Signup success! Please signin."
       });
     });
-  } else {
-    return res.json({
-      message: "Something went wrong. Try again"
-    });
-  }
+  });
 };
+
+// exports.signup = (req, res) => {
+//   const token = req.body.token;
+//   if (token) {
+//     jwt.verify(token, process.env.JWT_ACCOUNT_ACTIVATION, function(
+//       err,
+//       decoded
+//     ) {
+//       if (err) {
+//         return res.status(401).json({
+//           error: "Expired link. Please register again"
+//         });
+//       }
+
+//       const { name, email, password } = jwt.decode(token);
+
+//       let username = shortId.generate();
+//       let profile = `${process.env.CLIENT_URL}/profile/${username}`;
+
+//       const user = new User({ name, email, password, profile, username });
+//       user.save((err, user) => {
+//         if (err) {
+//           return res.status(401).json({
+//             error: errorHandler(err)
+//           });
+//         }
+//         return res.json({
+//           message: "Sign-up success! Please Sign-in"
+//         });
+//       });
+//     });
+//   } else {
+//     return res.json({
+//       message: "Something went wrong. Try again"
+//     });
+//   }
+// };
 
 exports.signin = (req, res) => {
   const { email, password } = req.body;
