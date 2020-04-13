@@ -46,6 +46,7 @@ const blogSchema = new mongoose.Schema(
       default: Date.now,
     },
     updatedAt: Date,
+    views: { type: Number, default: 0 },
     likes: [{ type: ObjectId, ref: "User" }],
   },
   { timestamp: true }

@@ -11,26 +11,33 @@ const {
   listRelated,
   listSearch,
   listByUser,
+  // newly added
   like,
-  unlike
+  unlike,
+  clickView,
+  listPopular,
 } = require("../controllers/blog");
 
 const {
   requireSignin,
   adminMiddleware,
   authMiddleware,
-  canUpdateDeleteBlog
+  canUpdateDeleteBlog,
 } = require("../controllers/auth");
 
 router.post("/blog", requireSignin, adminMiddleware, create);
 router.get("/blogs", list);
 router.post("/blogs-categories-tags", listAllBlogsCategoriesTags);
-router.get("/blog/:slug", read);
+router.get("/blog/:slug", clickView, read);
 router.delete("/blog/:slug", requireSignin, adminMiddleware, remove);
 router.put("/blog/:slug", requireSignin, adminMiddleware, update);
 router.get("/blog/photo/:slug", photo);
 router.post("/blogs/related", listRelated);
 router.get("/blogs/search", listSearch);
+
+// increment views
+// router.put("/blog-count/:slug", clickView); for testing!
+router.get("/blogs/popular", listPopular);
 
 // auth user blog crud
 router.post("/user/blog", requireSignin, authMiddleware, create);

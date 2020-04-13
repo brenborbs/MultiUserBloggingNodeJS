@@ -8,7 +8,8 @@ const {
   forgotPassword,
   resetPassword,
   preSignup,
-  googleLogin
+  googleLogin,
+  facebookLogin,
 } = require("../controllers/auth");
 
 // validators
@@ -17,7 +18,7 @@ const {
   userSignupValidator,
   userSigninValidator,
   forgotPasswordValidator,
-  resetPasswordValidator
+  resetPasswordValidator,
 } = require("../validators/auth");
 
 router.post("/signup", userSignupValidator, runValidation, signup);
@@ -38,6 +39,7 @@ router.put(
 );
 // google login
 router.post("/google-login", googleLogin);
+router.post("/facebook-login", facebookLogin);
 // test
 // router.get("/secret", requireSignin, (req, res) => {
 //   res.json({

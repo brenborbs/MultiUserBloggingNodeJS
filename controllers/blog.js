@@ -180,8 +180,8 @@ exports.read = (req, res) => {
     .populate("tags", "_id name slug")
     .populate("postedBy", "_id name username about")
     .select(
-      "_id title body slug mtitle mdesc about categories tags postedBy createdAt updatedAt likes"
-    ) // added likes
+      "_id title body slug mtitle mdesc about categories tags postedBy createdAt updatedAt likes views"
+    )
     .exec((err, data) => {
       if (err) {
         return res.json({
@@ -190,6 +190,25 @@ exports.read = (req, res) => {
       }
       res.json(data);
     });
+};
+
+// Add number of views
+exports.clickView = (req, res, next) => {
+  const slug = req.params.slug.toLowerCase();
+  Blog.findOneAndUpdate(
+    { slug },
+    { $inc: { views: 1 } },
+    { upsert: true, new: true }
+  ).exec((err, result) => {
+    if (err) {
+      console.log(err);
+      return res.status(400).json({
+        error: "Could not update view count",
+      });
+    }
+    next();
+    // res.json(result);
+  });
 };
 
 exports.remove = (req, res) => {
@@ -354,6 +373,27 @@ exports.listByUser = (req, res) => {
         res.json(data);
       });
   });
+};
+
+// null response
+exports.listPopular = (req, res) => {
+  let limit = req.body.limit ? parseInt(req.body.limit) : 3;
+  Blog.find({})
+    .limit(limit)
+    .populate("postedBy", "_id name username")
+    .populate("categories", "_id name slug")
+    .select("_id title slug body postedBy createdAt updatedAt")
+    .sort("-views -photo")
+
+    .exec((err, blogs) => {
+      if (err) {
+        return res.json({
+          error: errorHandler(err),
+        });
+      }
+      // console.log(blogs);
+      res.json(blogs);
+    });
 };
 
 // like / unlike
